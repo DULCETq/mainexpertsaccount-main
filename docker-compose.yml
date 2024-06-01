@@ -1,0 +1,23 @@
+version: "3.3"
+
+services:
+  db_auth:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres_auth_new
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  web_auth:
+    build: .
+    command:  python manage.py runserver 0.0.0.0:8002
+    volumes:
+      - .:/MainExpertsAuthService
+    ports:
+      - "8002:8002"
+    depends_on:
+      - db_auth
+    entrypoint: /entrypoint.sh
+

@@ -1,0 +1,21 @@
+version: "3.3"
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres_auth
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  web:
+    build: .
+    command:  python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/MainExpertsAuthService
+    ports:
+      - "8002:8002"
+    depends_on:
+      - db
